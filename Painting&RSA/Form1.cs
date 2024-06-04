@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace Painting_RSA
 {
@@ -17,12 +18,12 @@ namespace Painting_RSA
             InitializeComponent();
         }
         bool ispaint = false;
-        Point previousPoint = new Point(0, 0);
+        //Point previousPoint = new Point(0, 0);
         PaintInfo userInfo = new PaintInfo();
         private void PanelPainting_MouseDown(object sender, MouseEventArgs e)
         {
             ispaint = true;
-            previousPoint = e.Location;
+            //previousPoint = e.Location;
         }
 
         private void PanelPainting_MouseUp(object sender, MouseEventArgs e)
@@ -92,6 +93,55 @@ namespace Painting_RSA
             红色ToolStripMenuItem.Checked = false;
             黑色ToolStripMenuItem.Checked = false;
             自定义颜色ToolStripMenuItem.Checked = true;
+        }
+
+        private void 加密ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Text Flies(.txt)|*.txt";
+            if(saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                getOriginalString();
+                encryptString();
+                saveTextFile();
+            }
+        }
+
+        private void 解密ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Text Flies(.txt)|*.txt";
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                openTextFile();
+                decryptString();
+                redrawPicture();                             
+            }
+        }
+        private void getOriginalString()
+        {
+
+        }
+
+        private void encryptString()
+        {
+
+        }
+        private void saveTextFile()
+        {
+
+        }
+        private void openTextFile()
+        {
+
+        } 
+        private void decryptString()
+        {
+
+        }
+        private void redrawPicture()
+        {
+
         }
     }
     class PaintInfo
