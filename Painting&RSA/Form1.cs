@@ -110,13 +110,16 @@ namespace Painting_RSA
 
         private void 解密ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("是否保存绘制的图案？", "提示", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (PaintPointInfo != null)
             {
-                SaveFileDialog saveFileDialog = new SaveFileDialog();
-                saveFileDialog.Filter = "Text Flies(.txt)|*.txt";
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                if (MessageBox.Show("是否保存绘制的图案？", "提示", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    encryptString(saveFileDialog.FileName);
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.Filter = "Text Flies(.txt)|*.txt";
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        encryptString(saveFileDialog.FileName);
+                    }
                 }
             }
             OpenFileDialog openFileDialog = new OpenFileDialog();
