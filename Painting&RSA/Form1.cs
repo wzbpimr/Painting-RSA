@@ -22,6 +22,7 @@ namespace Painting_RSA
         bool ispaint = false;
         PaintInfo userInfo = new PaintInfo();
         List<Tuple<Point, Color,int>> PaintPointInfo = new List<Tuple<Point, Color,int>>();
+        int count;
         private void PanelPainting_MouseDown(object sender, MouseEventArgs e)
         {
             ispaint = true;
@@ -105,12 +106,12 @@ namespace Painting_RSA
             {
                 encryptString(saveFileDialog.FileName);
             }
-
+            count = PaintPointInfo.Count;
         }
 
         private void 解密ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (PaintPointInfo != null)
+            if (PaintPointInfo.Count != count)
             {
                 if (MessageBox.Show("是否保存绘制的图案？", "提示", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
@@ -222,7 +223,7 @@ namespace Painting_RSA
                 string[] parts = info.Split(',');
                 int x = int.Parse(parts[0]);
                 int y = int.Parse(parts[1]);
-                int size = int.Parse(parts[2]);
+                int size = int.Parse(parts[3]);
                 Color color = Color.FromArgb(int.Parse(parts[2]));
                 paintPointInfo.Add(new Tuple<Point, Color,int>(new Point(x, y), color, size));
             }
@@ -230,6 +231,15 @@ namespace Painting_RSA
         }
         private void redrawPicture(List<Tuple<Point, Color, int>> PaintPointInfo)//根据绘图数据重新绘制图片
         {
+            PaintInfo userInfo2 = new PaintInfo();
+            Graphics graphics = PanelPainting.CreateGraphics();
+            graphics.Clear(Color.White);
+            foreach (var paintpointinfo in PaintPointInfo)
+            {
+                userInfo2.brush.Color = paintpointinfo.Item2;
+                userInfo2.size = paintpointinfo.Item3;
+                graphics.FillEllipse(userInfo2.brush, paintpointinfo.Item1.X - userInfo2.size / 2, paintpointinfo.Item1.Y - userInfo2.size / 2, userInfo2.size, userInfo2.size);
+            }
             
             //清空当前画板，从头到尾遍历PaintPointInfo的数据，把图案从头到尾复现出来
         }
