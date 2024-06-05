@@ -52,6 +52,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PanelPainting.AutoSize = true;
+            this.PanelPainting.BackColor = System.Drawing.Color.White;
             this.PanelPainting.Controls.Add(this.menuStrip1);
             this.PanelPainting.Location = new System.Drawing.Point(0, 0);
             this.PanelPainting.Name = "PanelPainting";
@@ -99,20 +100,20 @@
             this.中线条ToolStripMenuItem,
             this.细线条ToolStripMenuItem});
             this.线条粗细ToolStripMenuItem.Name = "线条粗细ToolStripMenuItem";
-            this.线条粗细ToolStripMenuItem.Size = new System.Drawing.Size(182, 34);
+            this.线条粗细ToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.线条粗细ToolStripMenuItem.Text = "线条粗细";
             // 
             // 粗线条ToolStripMenuItem
             // 
             this.粗线条ToolStripMenuItem.Name = "粗线条ToolStripMenuItem";
-            this.粗线条ToolStripMenuItem.Size = new System.Drawing.Size(164, 34);
+            this.粗线条ToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.粗线条ToolStripMenuItem.Text = "粗线条";
             this.粗线条ToolStripMenuItem.Click += new System.EventHandler(this.粗线条ToolStripMenuItem_Click);
             // 
             // 中线条ToolStripMenuItem
             // 
             this.中线条ToolStripMenuItem.Name = "中线条ToolStripMenuItem";
-            this.中线条ToolStripMenuItem.Size = new System.Drawing.Size(164, 34);
+            this.中线条ToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.中线条ToolStripMenuItem.Text = "中线条";
             this.中线条ToolStripMenuItem.Click += new System.EventHandler(this.中线条ToolStripMenuItem_Click);
             // 
@@ -121,7 +122,7 @@
             this.细线条ToolStripMenuItem.Checked = true;
             this.细线条ToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.细线条ToolStripMenuItem.Name = "细线条ToolStripMenuItem";
-            this.细线条ToolStripMenuItem.Size = new System.Drawing.Size(164, 34);
+            this.细线条ToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.细线条ToolStripMenuItem.Text = "细线条";
             this.细线条ToolStripMenuItem.Click += new System.EventHandler(this.细线条ToolStripMenuItem_Click);
             // 
@@ -132,7 +133,7 @@
             this.黑色ToolStripMenuItem,
             this.自定义颜色ToolStripMenuItem});
             this.线条颜色ToolStripMenuItem.Name = "线条颜色ToolStripMenuItem";
-            this.线条颜色ToolStripMenuItem.Size = new System.Drawing.Size(182, 34);
+            this.线条颜色ToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.线条颜色ToolStripMenuItem.Text = "线条颜色";
             // 
             // 红色ToolStripMenuItem
