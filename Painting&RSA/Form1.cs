@@ -20,13 +20,11 @@ namespace Painting_RSA
             InitializeComponent();
         }
         bool ispaint = false;
-        //Point previousPoint = new Point(0, 0);
         PaintInfo userInfo = new PaintInfo();
         List<Tuple<Point, Color>> PaintPointInfo = new List<Tuple<Point, Color>>();
         private void PanelPainting_MouseDown(object sender, MouseEventArgs e)
         {
             ispaint = true;
-            //previousPoint = e.Location;
         }
 
         private void PanelPainting_MouseUp(object sender, MouseEventArgs e)
@@ -107,16 +105,27 @@ namespace Painting_RSA
             {
                 encryptString(saveFileDialog.FileName);
             }
+
         }
 
         private void 解密ToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (MessageBox.Show("是否保存绘制的图案？", "提示", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "Text Flies(.txt)|*.txt";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    encryptString(saveFileDialog.FileName);
+                }
+            }
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Text Flies(.txt)|*.txt";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                decryptString(openFileDialog.FileName);
-                redrawPicture();
+                
+                PaintPointInfo = decryptString(openFileDialog.FileName);
+                redrawPicture(PaintPointInfo);
             }
         }
 
@@ -144,13 +153,10 @@ namespace Painting_RSA
                 {
                     sw.WriteLine(privateKey);
                 }
-
             }
-
-
         }
 
-        private void decryptString(string filename)//读取RSA加密的Key和IV和绘图数据读取私钥对Key和IV进行解密，对绘图数据进行解密
+        private List<Tuple<Point,Color>> decryptString(string filename)//读取RSA加密的Key和IV和绘图数据读取私钥对Key和IV进行解密，对绘图数据进行解密
         {
             byte[] RSAEncryptedKey = null;
             byte[] RSAEncryptedIV = null;
@@ -207,22 +213,21 @@ namespace Painting_RSA
             string drawingData = Encoding.UTF8.GetString(drawingBytes);
 
 
-            PaintPointInfo.Clear();
+            List<Tuple<Point,Color>> paintPointInfo = new List<Tuple<Point,Color>>();
             foreach (string info in drawingData.Split(';'))
             {
                 string[] parts = info.Split(',');
                 int x = int.Parse(parts[0]);
                 int y = int.Parse(parts[1]);
                 Color color = Color.FromArgb(int.Parse(parts[2]));
-                PaintPointInfo.Add(new Tuple<Point, Color>(new Point(x, y), color));
+                paintPointInfo.Add(new Tuple<Point, Color>(new Point(x, y), color));
             }
-            this.Invalidate();
-
-
+            return paintPointInfo;
         }
-        private void redrawPicture()//根据绘图数据重新绘制图片
+        private void redrawPicture(List<Tuple<Point,Color>> PaintPointInfo)//根据绘图数据重新绘制图片
         {
-
+            
+            //清空当前画板，从头到尾遍历PaintPointInfo的数据，把图案从头到尾复现出来
         }
         private byte[] AESEncryptStringToBytes(string plainText, byte[] Key, byte[] IV)
         {
