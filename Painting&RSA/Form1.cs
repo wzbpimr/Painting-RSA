@@ -21,7 +21,7 @@ namespace Painting_RSA
         }
         bool ispaint = false;
         PaintInfo userInfo = new PaintInfo();
-        List<Tuple<Point, Color>> PaintPointInfo = new List<Tuple<Point, Color>>();
+        List<Tuple<Point, Color,int>> PaintPointInfo = new List<Tuple<Point, Color,int>>();
         private void PanelPainting_MouseDown(object sender, MouseEventArgs e)
         {
             ispaint = true;
@@ -38,7 +38,7 @@ namespace Painting_RSA
             {
                 Graphics graphics = PanelPainting.CreateGraphics();
                 graphics.FillEllipse(userInfo.brush, e.X - userInfo.size / 2, e.Y - userInfo.size / 2, userInfo.size, userInfo.size);
-                PaintPointInfo.Add(new Tuple<Point, Color>(e.Location, userInfo.brush.Color));
+                PaintPointInfo.Add(new Tuple<Point, Color,int>(e.Location, userInfo.brush.Color,userInfo.size));
                 //graphics.FillRectangle(userInfo.brush,e.X- userInfo.size / 2, e.Y-userInfo.size / 2, userInfo.size, userInfo.size);
             }
         }
@@ -134,7 +134,7 @@ namespace Painting_RSA
 
         private void encryptString(string filename)
         {
-            string paintingData = string.Join(";", PaintPointInfo.Select(p => $"{p.Item1.X},{p.Item1.Y},{p.Item2.ToArgb()}"));
+            string paintingData = string.Join(";", PaintPointInfo.Select(p => $"{p.Item1.X},{p.Item1.Y},{p.Item2.ToArgb()},{p.Item3}"));
             Aes aes = Aes.Create();
             byte[] AESDrawingData = AESEncryptStringToBytes(paintingData, aes.Key, aes.IV);
             using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
@@ -159,7 +159,7 @@ namespace Painting_RSA
             }
         }
 
-        private List<Tuple<Point,Color>> decryptString(string filename)//读取RSA加密的Key和IV和绘图数据读取私钥对Key和IV进行解密，对绘图数据进行解密
+        private List<Tuple<Point,Color,int>> decryptString(string filename)//读取RSA加密的Key和IV和绘图数据读取私钥对Key和IV进行解密，对绘图数据进行解密
         {
             byte[] RSAEncryptedKey = null;
             byte[] RSAEncryptedIV = null;
@@ -216,18 +216,19 @@ namespace Painting_RSA
             string drawingData = Encoding.UTF8.GetString(drawingBytes);
 
 
-            List<Tuple<Point,Color>> paintPointInfo = new List<Tuple<Point,Color>>();
+            List<Tuple<Point,Color,int>> paintPointInfo = new List<Tuple<Point, Color, int>>();
             foreach (string info in drawingData.Split(';'))
             {
                 string[] parts = info.Split(',');
                 int x = int.Parse(parts[0]);
                 int y = int.Parse(parts[1]);
+                int size = int.Parse(parts[2]);
                 Color color = Color.FromArgb(int.Parse(parts[2]));
-                paintPointInfo.Add(new Tuple<Point, Color>(new Point(x, y), color));
+                paintPointInfo.Add(new Tuple<Point, Color,int>(new Point(x, y), color, size));
             }
             return paintPointInfo;
         }
-        private void redrawPicture(List<Tuple<Point,Color>> PaintPointInfo)//根据绘图数据重新绘制图片
+        private void redrawPicture(List<Tuple<Point, Color, int>> PaintPointInfo)//根据绘图数据重新绘制图片
         {
             
             //清空当前画板，从头到尾遍历PaintPointInfo的数据，把图案从头到尾复现出来
